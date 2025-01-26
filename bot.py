@@ -1,4 +1,3 @@
-alimallick()
 with open('account.txt', 'r') as file:
     api_key = file.readline().strip()
     api_url = file.readline().strip()
