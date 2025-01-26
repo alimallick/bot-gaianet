@@ -1,3 +1,9 @@
+import requests
+import json
+import random
+import time
+import threading
+
 with open('account.txt', 'r') as file:
     api_key = file.readline().strip()
     api_url = file.readline().strip()
@@ -27,25 +33,23 @@ def send_request(message):
 
             if response.status_code == 200:
                 try:
-
                     response_json = response.json()
                     print(f"Response for message: '{message}'")
                     print(response_json)
-                    break 
+                    break
                 except json.JSONDecodeError:
                     print(f"Error: Received invalid JSON response for message: '{message}'")
                     print(f"Response Text: {response.text}")
             else:
                 print(f"Error: {response.status_code}, {response.text}. Retrying...")
-                time.sleep(5) 
+                time.sleep(5)
         except requests.exceptions.RequestException as e:
             print(f"Request failed with error: {e}. Retrying...")
-            time.sleep(5)  
+            time.sleep(5)
 
 def start_thread():
     while True:
         random_message = random.choice(user_messages)
-
         send_request(random_message)
 
 try:
@@ -68,5 +72,3 @@ for thread in threads:
     thread.join()
 
 print("All requests have been processed.")
-
-#source original by SHARE IT HUB
